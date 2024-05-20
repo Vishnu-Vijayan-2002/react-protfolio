@@ -14,17 +14,20 @@ const Homepage = () => {
   const sendEmail = (e) => {
     e.preventDefault();
 
-    let user_name = document.forms["myForm"]["user_name"].value;
+    let user_name = document.forms["myForm"]["to_name"].value;
     let from_name = document.forms["myForm"]["from_name"].value;
     let message = document.forms["myForm"]["message"].value;
+    var atposition=from_name.indexOf("@");  
+    var dotposition=from_name.lastIndexOf(".");  
+
     // console.log(from_name);
     if (user_name == "") {
       toast.error("You should enter Name ", {
         position: "bottom-center",
       });
       return false;
-    } else if (from_name == "") {
-      toast.error("You should enter Email", {
+    } else if (from_name == ""  || atposition<1 || dotposition<atposition+2 || dotposition+2>=from_name.length) {
+      toast.error("You should Enter a Valid Email", {
         position: "bottom-center",
       });
       return false;
@@ -51,7 +54,7 @@ const Homepage = () => {
     //     return false;
     //   }
     // }
-
+   
     setLoader(true);
 
     emailjs
@@ -60,12 +63,12 @@ const Homepage = () => {
       })
       .then(
         () => {
-          console.log("SUCCESS!");
+          // console.log("SUCCESS!");
           toast.success("Email sent", { position: "bottom-center" });
           setLoader(false);
         },
         (error) => {
-          console.log("FAILED...", error.text);
+          // console.log("FAILED...", error.text);
           setLoader(false);
         }
       );
@@ -77,7 +80,7 @@ const Homepage = () => {
   const darkModeHandlerfunction = useSelector(
     (state) => state.DarkmodeStore.value
   );
-  console.log(darkModeHandlerfunction);
+  // console.log(darkModeHandlerfunction);
   return (
     <div>
       <Toaster />
@@ -611,7 +614,7 @@ const Homepage = () => {
                   type="text"
                   className="form-input-field"
                   required
-                  name="user_name"
+                  name="to_name"
                 />
               </div>
               <div className="form-input-field-sec">
